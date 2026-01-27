@@ -3,7 +3,10 @@
 namespace Database\Factories;
 
 use App\Models\Course;
+use App\Models\Student;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class StudentFactory extends Factory
 {
@@ -14,8 +17,21 @@ class StudentFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'course_id' => Course::factory(),
-            'student_number' => fake()->word(),
+            'course_id' => Course::inRandomOrder()->first()->id,
+            'student_number' => fake()->unique()->numerify(date('Y').'-#####'),
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Student $student) {
+            User::create([
+                'name' => $student->name,
+                'email' => Str::slug($student->name).'@student.edu',
+                'password' => 'password',
+                'profileable_id' => $student->id,
+                'profileable_type' => Student::class,
+            ]);
+        });
     }
 }

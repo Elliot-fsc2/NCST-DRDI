@@ -35,6 +35,11 @@ class Student extends Model
         ];
     }
 
+    public function user()
+    {
+        return $this->morphOne(User::class, 'profileable');
+    }
+
     public function researchGroups(): BelongsToMany
     {
         return $this->belongsToMany(ResearchGroup::class);

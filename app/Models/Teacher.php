@@ -38,4 +38,9 @@ class Teacher extends Model
     {
         return $this->belongsTo(Department::class);
     }
+
+    public function user()
+    {
+        return $this->morphOne(User::class, 'profileable');
+    }
 }

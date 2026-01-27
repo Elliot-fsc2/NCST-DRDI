@@ -3,7 +3,10 @@
 namespace Database\Factories;
 
 use App\Models\Department;
+use App\Models\Teacher;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class TeacherFactory extends Factory
 {
@@ -14,8 +17,21 @@ class TeacherFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'department_id' => Department::factory(),
-            'role' => fake()->word(),
+            'department_id' => Department::inRandomOrder()->first()->id,
+            'role' => 'teacher',
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Teacher $teacher) {
+            User::create([
+                'name' => $teacher->name,
+                'email' => Str::slug($teacher->name).'@teacher.edu',
+                'password' => 'password',
+                'profileable_id' => $teacher->id,
+                'profileable_type' => Teacher::class,
+            ]);
+        });
     }
 }
