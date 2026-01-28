@@ -6,6 +6,11 @@ models:
     name: string
     department_id: id foreign
 
+  Semester:
+    name: string unique
+    start_date: date
+    end_date: date
+
   Teacher:
     name: string
     department_id: id foreign
@@ -17,6 +22,11 @@ models:
     student_number: string unique
     relationships:
       belongsToMany: ResearchGroup
+
+  Section:
+    course_id: id foreign
+    semester_id: id foreign
+    teacher_id: id foreign:teachers
 
   ResearchGroup:
     course_id: id foreign

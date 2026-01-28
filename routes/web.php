@@ -21,6 +21,7 @@ Route::middleware(['auth', 'teacher'])
     ->prefix('teacher')
     ->group(function () {
         Route::livewire('/home', 'pages::teacher.home')->name('teacher.home');
+        Route::livewire('/my-sections', 'pages::teacher.my-sections')->name('teacher.my-sections');
     });
 
 // Student Routes
