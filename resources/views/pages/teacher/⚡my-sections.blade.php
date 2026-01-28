@@ -2,7 +2,9 @@
 
 use Livewire\Component;
 
-new class extends Component {};
+new class extends Component {
+    public $count = 12;
+};
 ?>
 
 <x-slot name="title">
@@ -19,3 +21,8 @@ new class extends Component {};
 <div>
     hi
 </div>
+
+<script>
+    let count = $wire.count;
+    console.log(count);
+</script>

@@ -61,7 +61,7 @@ new class extends Component {
         ];
 
         // Mock sections data - will be replaced with actual teacher sections
-        $this->sections = [['id' => 1, 'code' => 'CS-101-A', 'name' => 'Introduction to Programming', 'students_count' => 35], ['id' => 2, 'code' => 'CS-201-B', 'name' => 'Data Structures', 'students_count' => 28], ['id' => 3, 'code' => 'CS-301-A', 'name' => 'Advanced Algorithms', 'students_count' => 22]];
+        $this->sections = [['id' => 1, 'code' => 'CS-101-A', 'students_count' => 35], ['id' => 2, 'code' => 'CS-201-B', 'students_count' => 28], ['id' => 3, 'code' => 'CS-301-A', 'students_count' => 22]];
     }
 };
 ?>
@@ -77,14 +77,15 @@ new class extends Component {
     </ol>
 </x-slot>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
     <!-- Main Content - News -->
-    <div class="lg:col-span-2 space-y-6">
-        <div class="flex items-center justify-between mb-4">
-            <h1 class="text-2xl font-bold text-on-surface-strong dark:text-on-surface-dark-strong">Latest News</h1>
+    <div class="lg:col-span-3">
+        <div class="flex items-center justify-center mb-10 ">
+            <h1 class="text-2xl font-bold text-on-surface-strong dark:text-on-surface-dark-strong">Latest
+                News</h1>
         </div>
 
-        <div class="space-y-4">
+        <div class="space-y-4 md:mx-20">
             @forelse($news as $item)
                 <article
                     class="bg-surface-alt dark:bg-surface-dark-alt border border-outline dark:border-outline-dark rounded-radius p-6 hover:shadow-md transition-shadow">
@@ -116,7 +117,7 @@ new class extends Component {
     </div>
 
     <!-- Aside - Sections Card -->
-    <aside class="lg:col-span-1 sticky top-20 self-start">
+    <aside class="lg:col-span-1 sticky top-23 self-start hidden lg:block mr-6">
         <div
             class="bg-surface-alt dark:bg-surface-dark-alt border border-outline dark:border-outline-dark rounded-radius p-4">
             <h2 class="text-lg font-semibold text-on-surface-strong dark:text-on-surface-dark-strong mb-4">My Sections
@@ -132,12 +133,9 @@ new class extends Component {
                                     class="text-sm font-medium text-on-surface-strong dark:text-on-surface-dark-strong truncate">
                                     {{ $section['code'] }}
                                 </p>
-                                <p class="text-xs text-on-surface/70 dark:text-on-surface-dark/70 line-clamp-1 mt-0.5">
-                                    {{ $section['name'] }}
-                                </p>
                             </div>
                             <span
-                                class="ml-2 inline-flex items-center justify-center min-w-[2rem] h-5 px-1.5 text-xs font-medium bg-primary/10 dark:bg-primary-dark/10 text-primary dark:text-primary-dark rounded-radius">
+                                class="ml-2 inline-flex items-center justify-center min-w-8 h-5 px-1.5 text-xs font-medium bg-primary/10 dark:bg-primary-dark/10 text-primary dark:text-primary-dark rounded-radius">
                                 {{ $section['students_count'] }}
                             </span>
                         </div>
