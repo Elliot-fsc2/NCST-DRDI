@@ -199,11 +199,9 @@
                 </div>
             </nav>
             <!-- main content  -->
-            <div id="main-content" class="p-4">
-                <div>
+            <div id="main-content" class="p-4 text-on-surface dark:text-white">
                     <!-- Add main content here  -->
                     {{ $slot }}
-                </div>
             </div>
         </div>
     </div>

@@ -24,6 +24,7 @@ models:
       belongsToMany: ResearchGroup
 
   Section:
+    name: string
     course_id: id foreign
     semester_id: id foreign
     teacher_id: id foreign:teachers

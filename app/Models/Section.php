@@ -2,14 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Teacher extends Model
+class Section extends Model
 {
-    use HasFactory;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -17,8 +14,9 @@ class Teacher extends Model
      */
     protected $fillable = [
         'name',
-        'department_id',
-        'role',
+        'course_id',
+        'semester_id',
+        'teacher_id',
     ];
 
     /**
@@ -30,22 +28,24 @@ class Teacher extends Model
     {
         return [
             'id' => 'integer',
-            'department_id' => 'integer',
+            'course_id' => 'integer',
+            'semester_id' => 'integer',
+            'teacher_id' => 'integer',
         ];
     }
 
-    public function department(): BelongsTo
+    public function course(): BelongsTo
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Course::class);
     }
 
-    public function user()
+    public function semester(): BelongsTo
     {
-        return $this->morphOne(User::class, 'profileable');
+        return $this->belongsTo(Semester::class);
     }
 
-    public function sections()
+    public function teacher(): BelongsTo
     {
-        return $this->hasMany(Section::class);
+        return $this->belongsTo(Teacher::class);
     }
 }
