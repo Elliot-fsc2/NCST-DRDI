@@ -28,6 +28,5 @@ Route::middleware(['auth', 'teacher'])
 Route::middleware(['auth'])
     ->prefix('student')
     ->group(function () {
-        Route::get('/home', function () {
-        })->name('student.home');
+        Route::get('/home', function () {})->name('student.home');
     });

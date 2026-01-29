@@ -1,9 +1,27 @@
 <?php
 
+use App\Models\Section;
 use Livewire\Component;
+use Livewire\WithPagination;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 new class extends Component {
-    public $count = 12;
+    use WithPagination;
+
+    public function sections(): LengthAwarePaginator
+    {
+        return Section::where('teacher_id', auth()->user()->profile->id)
+            ->withCourse()
+            ->withStudents()
+            ->withSemester()
+            ->withTeacher()
+            ->paginate(10);
+    }
+
+    public function mount()
+    {
+        dd($this->sections()->sectionSummary());
+    }
 };
 ?>
 

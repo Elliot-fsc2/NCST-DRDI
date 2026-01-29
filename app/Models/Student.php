@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use App\Collections\StudentCollection;
+use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+#[CollectedBy(StudentCollection::class)]
 class Student extends Model
 {
     use HasFactory;
@@ -55,23 +59,23 @@ class Student extends Model
         return $this->belongsToMany(Section::class);
     }
 
-    /**
-     * Retrieves the current active section for the student based on the current date.
-     *
-     * This method queries the 'sections' relationship and filters it to find a section
-     * where the related 'semester' has a start_date less than or equal to today and an
-     * end_date greater than or equal to today. It returns the first matching section,
-     * which represents the student's current section in the ongoing semester.
-     *
-     * @return \App\Models\Section|null The first matching section if found, or null otherwise.
-     */
-    public function currentSection(): ?Section
+    public function scopeWithUser(Builder $query): Builder
     {
-        $today = now('Asia/Manila')->toDateString();
+        return $query->with('user');
+    }
 
-        return $this->sections()
-            ->whereRelation('semester', 'start_date', '<=', $today)
-            ->whereRelation('semester', 'end_date', '>=', $today)
-            ->first();
+    public function scopeWithCourse(Builder $query): Builder
+    {
+        return $query->with('course');
+    }
+
+    public function scopeWithResearch(Builder $query): Builder
+    {
+        return $query->with('researchGroups');
+    }
+
+    public function scopeWithSections(Builder $query): Builder
+    {
+        return $query->with('sections.semester');
     }
 }
