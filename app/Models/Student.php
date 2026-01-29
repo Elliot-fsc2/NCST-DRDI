@@ -59,23 +59,32 @@ class Student extends Model
         return $this->belongsToMany(Section::class);
     }
 
-    public function scopeWithUser(Builder $query): Builder
+    protected function scopeWithUser(Builder $query): Builder
     {
         return $query->with('user');
     }
 
-    public function scopeWithCourse(Builder $query): Builder
+    protected function scopeWithCourse(Builder $query): Builder
     {
         return $query->with('course');
     }
 
-    public function scopeWithResearch(Builder $query): Builder
+    protected function scopeWithResearch(Builder $query): Builder
     {
         return $query->with('researchGroups');
     }
 
-    public function scopeWithSections(Builder $query): Builder
+    protected function scopeWithSections(Builder $query): Builder
     {
         return $query->with('sections.semester');
+    }
+
+    protected function scopeCurrentSection(Builder $query): Builder
+    {
+        return $query->whereHas('sections.semester', function (Builder $q) {
+            $today = now()->toDateString();
+            $q->where('start_date', '<=', $today)
+                ->where('end_date', '>=', $today);
+        });
     }
 }

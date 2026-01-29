@@ -59,23 +59,32 @@ class Section extends Model
         return $this->belongsToMany(Student::class);
     }
 
-    public function scopeWithCourse(Builder $query)
+    protected function scopeWithCourse(Builder $query)
     {
         return $query->with('course');
     }
 
-    public function scopeWithSemester(Builder $query)
+    protected function scopeWithSemester(Builder $query)
     {
         return $query->with('semester');
     }
 
-    public function scopeWithTeacher(Builder $query)
+    protected function scopeWithTeacher(Builder $query)
     {
         return $query->with('teacher');
     }
 
-    public function scopeWithStudents(Builder $query)
+    protected function scopeWithStudents(Builder $query)
     {
         return $query->with('students');
+    }
+
+    protected function scopeActiveSections(Builder $query)
+    {
+        return $query->whereHas('semester', function (Builder $q) {
+            $today = now()->toDateString();
+            $q->where('start_date', '<=', $today)
+                ->where('end_date', '>=', $today);
+        });
     }
 }
