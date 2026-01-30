@@ -30,21 +30,24 @@
                 <x-heroicon-m-user-group class="size-5" />
                 Groups
                 <span
-                    class="text-xs font-medium px-1.5 py-0.5 rounded-full border border-outline dark:border-outline-dark bg-surface-alt dark:bg-surface-dark-alt">
+                    class="text-xs font-medium px-1.5 py-0.5 rounded-full border border-outline dark:border-outline-dark bg-surface-alt dark:bg-surface-dark-alt text-on-surface-strong dark:text-on-surface-dark-strong">
                     {{ $section->researchGroups->count() }}
                 </span>
                 @if (request()->routeIs('teacher.my-sections.view.groups'))
                     <span class="sr-only">active</span>
                 @endif
             </a>
-            <a href="#"
-                class="flex items-center gap-2 px-4 py-3 text-sm font-medium text-on-surface hover:bg-primary/5 hover:text-on-surface-strong dark:text-on-surface-dark dark:hover:bg-primary-dark/5 dark:hover:text-on-surface-dark-strong underline-offset-2 focus-visible:underline focus:outline-hidden transition-colors">
+            <a href="{{ route('teacher.my-sections.view.students', ['section' => $section]) }}" wire:navigate
+                class="flex items-center gap-2 px-4 py-3 text-sm font-medium {{ request()->routeIs('teacher.my-sections.view.students') ? 'bg-primary/80 text-on-primary dark:bg-primary-dark/10 dark:text-on-surface-dark-strong' : 'text-on-surface hover:bg-primary/5 hover:text-on-surface-strong dark:text-on-surface-dark dark:hover:bg-primary-dark/5 dark:hover:text-on-surface-dark-strong' }} underline-offset-2 focus-visible:underline focus:outline-hidden transition-colors">
                 <x-heroicon-m-academic-cap class="size-5" />
                 Students
                 <span
-                    class="text-xs font-medium px-1.5 py-0.5 rounded-full border border-outline dark:border-outline-dark bg-surface-alt dark:bg-surface-dark-alt">
+                    class="text-xs font-medium px-1.5 py-0.5 rounded-full border border-outline dark:border-outline-dark bg-surface-alt dark:bg-surface-dark-alt text-on-surface-strong dark:text-on-surface-dark-strong">
                     {{ $section->students->count() }}
                 </span>
+                @if (request()->routeIs('teacher.my-sections.view.students'))
+                    <span class="sr-only">active</span>
+                @endif
             </a>
         </nav>
 
