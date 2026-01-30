@@ -22,6 +22,8 @@ Route::middleware(['auth', 'teacher'])
     ->group(function () {
         Route::livewire('/home', 'pages::teacher.home')->name('teacher.home');
         Route::livewire('/my-sections', 'pages::teacher.my-sections')->name('teacher.my-sections');
+        Route::livewire('/my-sections/{section}', 'pages::teacher.my-sections.view.news')->name('teacher.my-sections.view');
+        Route::livewire('/my-sections/{section}/groups', 'pages::teacher.my-sections.view.groups')->name('teacher.my-sections.view.groups');
     });
 
 // Student Routes

@@ -71,7 +71,7 @@
                     </a>
 
                     <a href="{{ route('teacher.my-sections') }}" wire:navigate
-                        class="flex items-center rounded-radius gap-2 px-2 py-1.5 text-sm font-medium {{ request()->routeIs($prefix . '.my-sections') ? 'bg-primary/80 text-on-primary dark:bg-primary-dark/10 dark:text-on-surface-dark-strong' : 'text-on-surface hover:bg-primary/5 hover:text-on-surface-strong dark:text-on-surface-dark dark:hover:bg-primary-dark/5 dark:hover:text-on-surface-dark-strong' }} underline-offset-2 focus-visible:underline focus:outline-hidden">
+                        class="flex items-center rounded-radius gap-2 px-2 py-1.5 text-sm font-medium {{ request()->routeIs($prefix . '.my-sections', $prefix . '.my-sections.*') ? 'bg-primary/80 text-on-primary dark:bg-primary-dark/10 dark:text-on-surface-dark-strong' : 'text-on-surface hover:bg-primary/5 hover:text-on-surface-strong dark:text-on-surface-dark dark:hover:bg-primary-dark/5 dark:hover:text-on-surface-dark-strong' }} underline-offset-2 focus-visible:underline focus:outline-hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                             class="size-5 shrink-0" aria-hidden="true">
                             <path
@@ -200,11 +200,13 @@
             </nav>
             <!-- main content  -->
             <div id="main-content" class="p-4 text-on-surface dark:text-white">
-                    <!-- Add main content here  -->
-                    {{ $slot }}
+                {{ $slot }}
             </div>
         </div>
     </div>
+    @persist('notification')
+        <x-notification />
+    @endpersist
     @livewireScripts
 </body>
 

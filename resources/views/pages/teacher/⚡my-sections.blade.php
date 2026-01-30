@@ -29,7 +29,7 @@ new class extends Component {
     #[Computed]
     public function sections()
     {
-        return Section::where('teacher_id', auth()->id())
+        return Section::where('teacher_id', $this->teacher?->id)
             ->when($this->course_id, fn($query) => $query->where('course_id', $this->course_id))
             ->with(['course', 'teacher', 'semester'])
             ->withCount('students')
@@ -72,7 +72,7 @@ new class extends Component {
             <label for="course_filter" class="sr-only">Filter by Course</label>
             <select id="course_filter" wire:model.live="course_id"
                 class="appearance-none w-full sm:w-64 pl-4 pr-10 py-2.5 border border-outline bg-surface text-on-surface dark:border-outline-dark dark:bg-surface-dark dark:text-on-surface-dark rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
-                <option value="">All Courses</option>
+                <option value="">All</option>
                 @foreach ($this->courses as $course)
                     <option value="{{ $course->id }}">{{ $course->name }}</option>
                 @endforeach
@@ -104,26 +104,17 @@ new class extends Component {
                 {{ $this->sections->sum('students_count') }}
             </p>
         </div>
-        <div
-            class="p-4 bg-surface-alt dark:bg-surface-dark-alt rounded-xl border border-outline/50 dark:border-outline-dark/50">
-            <p class="text-sm text-on-surface/70 dark:text-on-surface-dark/70">Courses</p>
-            <p class="mt-1 text-2xl font-bold text-on-surface-strong dark:text-on-surface-dark-strong">
-                {{ $this->courses->count() }}
-            </p>
-        </div>
-        <div
-            class="p-4 bg-surface-alt dark:bg-surface-dark-alt rounded-xl border border-outline/50 dark:border-outline-dark/50">
-            <p class="text-sm text-on-surface/70 dark:text-on-surface-dark/70">This Page</p>
-            <p class="mt-1 text-2xl font-bold text-on-surface-strong dark:text-on-surface-dark-strong">
-                {{ $this->sections->count() }}
-            </p>
-        </div>
     </div>
+
+
 
     {{-- Section Cards --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" wire:loading.class="opacity-50">
         @forelse ($this->sections as $section)
-            <x-section-card :section="$section" :key="$section->id" />
+            <a href="{{ route('teacher.my-sections.view', ['section' => $section]) }}" :key="$section->id"
+              wire:navigate>
+                <x-section-card :section="$section" :key="$section->id" />
+            </a>
         @empty
             <div class="col-span-full flex flex-col items-center justify-center py-16 text-center">
                 <div
@@ -161,5 +152,3 @@ new class extends Component {
         </div>
     @endif
 </div>
-
-<script></script>

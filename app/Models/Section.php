@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use App\Collections\SectionCollection;
-use Illuminate\Database\Eloquent\Attributes\CollectedBy;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 #[CollectedBy(SectionCollection::class)]
@@ -20,6 +21,7 @@ class Section extends Model
     protected $fillable = [
         'name',
         'course_id',
+        'section_id',
         'semester_id',
         'teacher_id',
     ];
@@ -35,6 +37,7 @@ class Section extends Model
             'id' => 'integer',
             'course_id' => 'integer',
             'semester_id' => 'integer',
+            'section_id' => 'integer',
             'teacher_id' => 'integer',
         ];
     }
@@ -57,6 +60,11 @@ class Section extends Model
     public function students(): BelongsToMany
     {
         return $this->belongsToMany(Student::class);
+    }
+
+    public function researchGroups(): HasMany
+    {
+        return $this->hasMany(ResearchGroup::class);
     }
 
     protected function scopeWithCourse(Builder $query)
