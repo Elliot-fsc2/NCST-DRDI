@@ -20,9 +20,9 @@ Route::redirect('/', '/login');
 Route::middleware(['auth', 'teacher'])
     ->prefix('teacher')
     ->group(function () {
-        Route::livewire('/home', 'pages::teacher.home')->name('teacher.home');
-        Route::livewire('/my-sections', 'pages::teacher.my-sections')->name('teacher.my-sections');
-        Route::livewire('/my-sections/{section}', 'pages::teacher.my-sections.view.news')->name('teacher.my-sections.view');
+        Route::livewire('/home', 'teacher::home-new')->name('teacher.home');
+        Route::livewire('/my-sections', 'teacher::my-sections')->name('teacher.my-sections');
+        Route::livewire('/my-sections/{section}', 'teacher::my-sections.view')->name('teacher.my-sections.view');
         Route::livewire('/my-sections/{section}/groups', 'pages::teacher.my-sections.view.groups')->name('teacher.my-sections.view.groups');
         Route::livewire('/my-sections/{section}/students', 'pages::teacher.my-sections.view.students')->name('teacher.my-sections.view.students');
     });

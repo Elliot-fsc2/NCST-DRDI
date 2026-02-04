@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use App\Collections\SectionCollection;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[CollectedBy(SectionCollection::class)]
 class Section extends Model
@@ -21,7 +21,6 @@ class Section extends Model
     protected $fillable = [
         'name',
         'course_id',
-        'section_id',
         'semester_id',
         'teacher_id',
     ];
@@ -93,6 +92,14 @@ class Section extends Model
             $today = now()->toDateString();
             $q->where('start_date', '<=', $today)
                 ->where('end_date', '>=', $today);
+        });
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($section) {
+            $section->researchGroups()->delete();
+            $section->students()->detach();
         });
     }
 }

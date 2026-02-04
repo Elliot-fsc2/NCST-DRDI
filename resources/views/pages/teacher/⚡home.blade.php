@@ -1,8 +1,9 @@
 <?php
 
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 
-new class extends Component {
+new #[Layout('layouts::new-layout')] class extends Component {
     public $news = [];
     public $sections = [];
 
@@ -117,7 +118,7 @@ new class extends Component {
     </div>
 
     <!-- Aside - Sections Card -->
-    <aside class="lg:col-span-1 sticky top-23 self-start hidden lg:block mr-6">
+    <aside class="lg:col-span-1 absolute left-300 self-start hidden lg:block mr-6">
         <div
             class="bg-surface-alt dark:bg-surface-dark-alt border border-outline dark:border-outline-dark rounded-radius p-4">
             <h2 class="text-lg font-semibold text-on-surface-strong dark:text-on-surface-dark-strong mb-4">My Sections

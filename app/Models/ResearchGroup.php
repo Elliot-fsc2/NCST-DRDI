@@ -17,8 +17,8 @@ class ResearchGroup extends Model
      * @var array
      */
     protected $fillable = [
-        'course_id',
         'leader_id',
+        'section_id',
     ];
 
     /**
@@ -29,10 +29,14 @@ class ResearchGroup extends Model
     protected function casts(): array
     {
         return [
-            'id' => 'integer',
-            'course_id' => 'integer',
+            'section_id' => 'integer',
             'leader_id' => 'integer',
         ];
+    }
+
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
     }
 
     public function students(): BelongsToMany
