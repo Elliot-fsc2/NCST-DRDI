@@ -34,14 +34,14 @@ class Teacher extends Model
         ];
     }
 
-    public function department(): BelongsTo
-    {
-        return $this->belongsTo(Department::class);
-    }
-
     public function user()
     {
         return $this->morphOne(User::class, 'profileable');
+    }
+
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class);
     }
 
     public function sections()

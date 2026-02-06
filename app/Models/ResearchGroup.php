@@ -51,6 +51,13 @@ class ResearchGroup extends Model
 
     public function leader(): BelongsTo
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class, 'leader_id');
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($researchGroup) {
+            $researchGroup->students()->detach();
+        });
     }
 }

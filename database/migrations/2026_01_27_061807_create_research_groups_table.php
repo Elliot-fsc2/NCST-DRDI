@@ -15,9 +15,10 @@ return new class extends Migration
 
         Schema::create('research_groups', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_id')->constrained();
             $table->foreignId('section_id')->nullable()->constrained();
             $table->foreignId('leader_id')->constrained('students');
+            $table->string('final_title');
+            $table->integer('total_fees')->default(0);
             $table->timestamps();
         });
 

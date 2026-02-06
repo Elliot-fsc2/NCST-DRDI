@@ -1,15 +1,20 @@
 <?php
 
+use App\Models\Course;
 use App\Models\Section;
 use Livewire\Component;
+use App\Models\Semester;
+use Livewire\Attributes\On;
 use Filament\Actions\Action;
 use Livewire\Attributes\Title;
-use Livewire\Attributes\On;
 use Livewire\Attributes\Computed;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Schemas\Concerns\InteractsWithSchemas;
+
 
 new #[Title('My Sections')]
   class extends Component implements HasActions, HasSchemas {
@@ -36,6 +41,39 @@ new #[Title('My Sections')]
       })
       ->successNotificationTitle('Section deleted successfully.')
       ->requiresConfirmation();
+  }
+
+  public function editAction(): Action
+  {
+    return Action::make('updateSection')
+      ->fillForm(function (array $arguments): array {
+        $section = $arguments['section'];
+
+        return [
+          'name' => $section['name'],
+          'course_id' => $section['course_id'],
+          'semester_id' => $section['semester_id'],
+        ];
+      })
+      ->action(function (array $arguments, array $data) {
+        $section = Section::find($arguments['section']['id']);
+        $section->update($data);
+
+        $this->dispatch('section-created');
+      })
+      ->successNotificationTitle('Section updated successfully.')
+      ->modalWidth('md')
+      ->schema([
+        TextInput::make('name')
+          ->required(),
+        Select::make('course_id')
+          ->label('Course')
+          ->options(Course::whereRelation('department', 'id', auth()->user()->profile->department_id)->pluck('name', 'id'))
+          ->required(),
+        Select::make('semester_id')
+          ->options(Semester::pluck('name', 'id'))
+          ->required(),
+      ]);
   }
 };
 ?>
@@ -69,7 +107,7 @@ new #[Title('My Sections')]
         {{ $this->sections->count() }}
       </div>
       <div>
-        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Total Load</p>
+        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Total Load</p>
         <p class="text-sm font-semibold text-gray-800">Assigned Sections</p>
       </div>
     </div>
@@ -99,7 +137,8 @@ new #[Title('My Sections')]
               </button>
               <div x-show="open" x-cloak x-transition.origin.top.right
                 class="absolute right-0 mt-2 w-40 bg-white border border-gray-100 rounded-xl shadow-xl z-10 py-2">
-                <a href="#" class="block px-4 py-2 text-xs font-semibold text-gray-600 hover:bg-gray-50">Edit Section</a>
+                <button wire:click="mountAction('editAction', {section: {{ $section}}})"
+                  class="block px-4 py-2 text-xs font-semibold text-gray-600 hover:bg-gray-50">Edit Section</button>
                 <button wire:click="mountAction('deleteAction', {section: {{ $section->id }}})"
                   class="block w-full text-left px-4 py-2 text-xs font-semibold text-red-600 hover:bg-red-50">Delete</button>
               </div>

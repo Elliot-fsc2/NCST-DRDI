@@ -36,7 +36,7 @@ class Semester extends Model
         return $this->hasMany(Section::class);
     }
 
-    public static function current(): ?Semester
+    public function current(): ?Semester
     {
         $today = now('Asia/Manila')->toDateString();
 
