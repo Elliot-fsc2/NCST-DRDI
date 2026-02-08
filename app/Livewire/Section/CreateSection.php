@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Section;
 
+use App\Enums\InstructorRole;
 use App\Models\Course;
 use App\Models\Section;
+use App\Models\Semester;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Components\Select;
@@ -35,10 +37,16 @@ class CreateSection extends Component implements HasActions, HasSchemas
                     ->required(),
                 Select::make('course_id')
                     ->label('Course')
-                    ->options(Course::whereRelation('department', 'id', auth()->user()->profile->department_id)->pluck('name', 'id'))
-                    ->required(),
+                    ->options(function (): array {
+                        $query = Course::query();
+                        if (auth()->user()->profile->role !== InstructorRole::RDO) {  // Changed from !== InstructorRole::RDO->value
+                            $query->whereRelation('department', 'id', auth()->user()->profile->department_id);
+                        }
+
+                        return $query->pluck('name', 'id')->toArray();
+                    }),
                 Select::make('semester_id')
-                    ->relationship('semester', 'name')
+                    ->options(Semester::currentSemester()->pluck('year', 'id'))
                     ->required(),
             ])
             ->statePath('data')
@@ -54,6 +62,7 @@ class CreateSection extends Component implements HasActions, HasSchemas
         $record = Section::create($data);
 
         $this->form->model($record)->saveRelationships();
+        $this->form->fill();
         $this->dispatch('section-created');
         Notification::make()
             ->title('Section created successfully.')

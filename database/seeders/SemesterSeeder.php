@@ -13,9 +13,10 @@ class SemesterSeeder extends Seeder
     public function run(): void
     {
         Semester::create([
-            'name' => '2024-2025 First Semester',
-            'start_date' => '2024-08-01',
-            'end_date' => '2024-12-19',
+            'year' => '2025-2026',
+            'phase' => 'First Semester',
+            'start_date' => '2025-11-01',
+            'end_date' => '2026-03-19',
         ]);
     }
 }

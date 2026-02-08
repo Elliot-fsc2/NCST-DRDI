@@ -34,6 +34,7 @@ return [
         'pages' => resource_path('views/pages'),
         'teacher' => resource_path('views/teacher'),
         'student' => resource_path('views/student'),
+        'rdo' => resource_path('views/rdo'),
 
     ],
 

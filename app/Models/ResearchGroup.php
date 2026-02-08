@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ResearchGroup extends Model
 {
@@ -17,7 +18,8 @@ class ResearchGroup extends Model
      * @var array
      */
     protected $fillable = [
-        'leader_id',
+        'name',
+        'course_id',
         'section_id',
     ];
 
@@ -29,14 +31,11 @@ class ResearchGroup extends Model
     protected function casts(): array
     {
         return [
+            'id' => 'integer',
+            'course_id' => 'integer',
             'section_id' => 'integer',
             'leader_id' => 'integer',
         ];
-    }
-
-    public function section()
-    {
-        return $this->belongsTo(Section::class);
     }
 
     public function students(): BelongsToMany
@@ -51,13 +50,11 @@ class ResearchGroup extends Model
 
     public function leader(): BelongsTo
     {
-        return $this->belongsTo(Student::class, 'leader_id');
+        return $this->belongsTo(Student::class);
     }
 
-    protected static function booted()
+    public function members(): HasMany
     {
-        static::deleting(function ($researchGroup) {
-            $researchGroup->students()->detach();
-        });
+        return $this->hasMany(Member::class);
     }
 }

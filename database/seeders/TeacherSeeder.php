@@ -15,4 +15,5 @@ class TeacherSeeder extends Seeder
         Teacher::factory()->count(50)->create();
     }
 
+
 }

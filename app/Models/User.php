@@ -51,6 +51,21 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
+    public function typeOfUser(): ?string
+    {
+        return match ($this->role) {
+            'teacher' => Teacher::class,
+            'student' => Student::class,
+            'rdo' => $this->profile()->role === 'rdo',
+            default => null,
+        };
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return $this->role === $role;
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->email === 'admin@example.com';

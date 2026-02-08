@@ -1,11 +1,36 @@
-created: 'database/factories/DepartmentFactory.php database/factories/CourseFactory.php database/factories/TeacherFactory.php database/factories/StudentFactory.php database/factories/ResearchGroupFactory.php database/factories/ResearchProjectFactory.php database/migrations/2026_01_27_061803_create_departments_table.php database/migrations/2026_01_27_061804_create_courses_table.php database/migrations/2026_01_27_061805_create_teachers_table.php database/migrations/2026_01_27_061806_create_students_table.php database/migrations/2026_01_27_061807_create_research_groups_table.php database/migrations/2026_01_27_061808_create_research_projects_table.php database/migrations/2026_01_27_061809_create_research_group_student_table.php app/Models/Department.php app/Models/Course.php app/Models/Teacher.php app/Models/Student.php app/Models/ResearchGroup.php app/Models/ResearchProject.php'
+created:
+    - database/factories/DepartmentFactory.php
+    - database/factories/CourseFactory.php
+    - database/factories/SemesterFactory.php
+    - database/factories/TeacherFactory.php
+    - database/factories/StudentFactory.php
+    - database/factories/SectionFactory.php
+    - database/factories/ResearchGroupFactory.php
+    - database/factories/ResearchProjectFactory.php
+    - database/migrations/2026_02_07_145912_create_departments_table.php
+    - database/migrations/2026_02_07_145913_create_courses_table.php
+    - database/migrations/2026_02_07_145914_create_semesters_table.php
+    - database/migrations/2026_02_07_145915_create_teachers_table.php
+    - database/migrations/2026_02_07_145916_create_students_table.php
+    - database/migrations/2026_02_07_145917_create_sections_table.php
+    - database/migrations/2026_02_07_145918_create_research_groups_table.php
+    - database/migrations/2026_02_07_145919_create_research_projects_table.php
+    - database/migrations/2026_02_07_145920_create_research_group_student_table.php
+    - app/Models/Department.php
+    - app/Models/Course.php
+    - app/Models/Semester.php
+    - app/Models/Teacher.php
+    - app/Models/Student.php
+    - app/Models/Section.php
+    - app/Models/ResearchGroup.php
+    - app/Models/ResearchProject.php
 models:
-    Course: { name: string, department_id: 'biginteger unsigned' }
+    User: {  }
     Department: { name: string }
-    ResearchGroup: { course_id: 'biginteger unsigned', leader_id: 'biginteger unsigned' }
-    ResearchProject: { title: string, description: text, research_group_id: 'biginteger unsigned', assigned_teacher_id: 'biginteger unsigned' }
-    Section: {  }
-    Semester: {  }
-    Student: { name: string, course_id: 'biginteger unsigned', student_number: string }
-    Teacher: { name: string, department_id: 'biginteger unsigned', role: 'string nullable' }
-    User: { name: string, email: string, email_verified_at: 'timestamp nullable', password: string, role: 'string default:user', profileable_type: string, profileable_id: 'biginteger unsigned', remember_token: 'string:100 nullable' }
+    Course: { name: string, department_id: 'id foreign' }
+    Semester: { year: string, phase: string, start_date: date, end_date: date }
+    Teacher: { name: string, department_id: 'id foreign', role: 'string nullable' }
+    Student: { name: string, course_id: 'id foreign', student_number: 'string unique', relationships: { belongsToMany: ResearchGroup } }
+    Section: { name: string, course_id: 'id foreign', semester_id: 'id foreign', teacher_id: 'id foreign:teachers' }
+    ResearchGroup: { course_id: 'id foreign', leader_id: 'id foreign:students', relationships: { belongsToMany: Student } }
+    ResearchProject: { title: string, description: text, research_group_id: 'id foreign', assigned_teacher_id: 'id foreign:teachers' }

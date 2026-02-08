@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Semester;
 use Livewire\Attributes\On;
 use Filament\Actions\Action;
+use App\Enums\InstructorRole;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Computed;
 use Filament\Forms\Components\Select;
@@ -21,6 +22,12 @@ new #[Title('My Sections')]
   use InteractsWithActions;
   use InteractsWithSchemas;
 
+  public function mount(): void
+  {
+    // dd(auth()->user()->profile->role, InstructorRole::RDO->value);
+    // dd(auth()->user()->profile->role === InstructorRole::RDO);
+
+  }
   #[Computed]
   #[On('section-created')]
   public function sections()
@@ -38,6 +45,8 @@ new #[Title('My Sections')]
       ->action(function (array $arguments) {
         $section = Section::find($arguments['section']);
         $section->delete();
+        $section->students()->detach();
+        $section->researchGroups()->delete();
       })
       ->successNotificationTitle('Section deleted successfully.')
       ->requiresConfirmation();
@@ -68,10 +77,17 @@ new #[Title('My Sections')]
           ->required(),
         Select::make('course_id')
           ->label('Course')
-          ->options(Course::whereRelation('department', 'id', auth()->user()->profile->department_id)->pluck('name', 'id'))
-          ->required(),
+          ->options(function (): array {
+            $query = Course::query();
+            if (auth()->user()->profile->role !== InstructorRole::RDO) {  // Changed from !== InstructorRole::RDO->value
+              $query->whereRelation('department', 'id', auth()->user()->profile->department_id);
+            }
+
+            return $query->pluck('name', 'id')->toArray();
+          }),
         Select::make('semester_id')
-          ->options(Semester::pluck('name', 'id'))
+          ->label('Semester')
+          ->options(Semester::all()->mapWithKeys(fn($semester) => [$semester->id => $semester->year . ' ' . $semester->phase]))
           ->required(),
       ]);
   }

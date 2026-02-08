@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
-use App\Collections\SectionCollection;
-use Illuminate\Database\Eloquent\Attributes\CollectedBy;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[CollectedBy(SectionCollection::class)]
 class Section extends Model
 {
+    use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -36,7 +34,6 @@ class Section extends Model
             'id' => 'integer',
             'course_id' => 'integer',
             'semester_id' => 'integer',
-            'section_id' => 'integer',
             'teacher_id' => 'integer',
         ];
     }
@@ -56,50 +53,13 @@ class Section extends Model
         return $this->belongsTo(Teacher::class);
     }
 
-    public function students(): BelongsToMany
+    public function students(): HasMany
     {
-        return $this->belongsToMany(Student::class);
+        return $this->hasMany(SectionStudent::class);
     }
 
     public function researchGroups(): HasMany
     {
         return $this->hasMany(ResearchGroup::class);
-    }
-
-    protected function scopeWithCourse(Builder $query)
-    {
-        return $query->with('course');
-    }
-
-    protected function scopeWithSemester(Builder $query)
-    {
-        return $query->with('semester');
-    }
-
-    protected function scopeWithTeacher(Builder $query)
-    {
-        return $query->with('teacher');
-    }
-
-    protected function scopeWithStudents(Builder $query)
-    {
-        return $query->with('students');
-    }
-
-    protected function scopeActiveSections(Builder $query)
-    {
-        return $query->whereHas('semester', function (Builder $q) {
-            $today = now()->toDateString();
-            $q->where('start_date', '<=', $today)
-                ->where('end_date', '>=', $today);
-        });
-    }
-
-    protected static function booted()
-    {
-        static::deleting(function ($section) {
-            $section->researchGroups()->delete();
-            $section->students()->detach();
-        });
     }
 }

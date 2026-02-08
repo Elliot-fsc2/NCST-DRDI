@@ -1,13 +1,14 @@
 models:
   Department:
     name: string
-  
+
   Course:
     name: string
     department_id: id foreign
 
   Semester:
-    name: string unique
+    year: string
+    phase: string
     start_date: date
     end_date: date
 
@@ -22,21 +23,29 @@ models:
     student_number: string unique
     relationships:
       belongsToMany: ResearchGroup
+      belongsToMany: Section
 
   Section:
     name: string
     course_id: id foreign
     semester_id: id foreign
     teacher_id: id foreign:teachers
+    relationships:
+      belongsToMany: Student
 
   ResearchGroup:
     course_id: id foreign
     leader_id: id foreign:students
     relationships:
       belongsToMany: Student
-  
+
   ResearchProject:
     title: string
     description: text
     research_group_id: id foreign
     assigned_teacher_id: id foreign:teachers
+
+  ResearchMember:
+    research_group_id: id foreign
+    student_name: string
+    role: string

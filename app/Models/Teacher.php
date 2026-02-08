@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\InstructorRole;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Teacher extends Model
 {
@@ -31,6 +32,7 @@ class Teacher extends Model
         return [
             'id' => 'integer',
             'department_id' => 'integer',
+            'role' => InstructorRole::class,
         ];
     }
 

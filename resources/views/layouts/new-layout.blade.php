@@ -23,7 +23,7 @@
     </div>
 
     <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" x-cloak
-      class="fixed inset-y-0 left-0 z-1 w-64 bg-gray-100 border-r border-gray-200 transition-transform duration-300 transform lg:translate-x-0 lg:static lg:inset-0">
+      class="fixed inset-y-0 left-0 z-40 w-64 bg-gray-100 border-r border-gray-200 transition-transform duration-300 transform lg:translate-x-0 lg:static lg:inset-0">
 
       <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
         <span class="text-xl font-bold text-amber-500">DRDI <span class="text-gray-800">NCST</span></span>
@@ -33,18 +33,31 @@
       </div>
 
       <nav class="mt-6 px-4 space-y-1">
-        <a href="{{ route('teacher.home') }}" wire:navigate
-          class="flex items-center px-4 py-2 rounded-lg group {{ request()->routeIs('teacher.home') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100 transition-colors' }}">
-          <x-heroicon-o-home class="w-5 h-5 mr-3" /> Home
-        </a>
-        <a href="{{ route('teacher.my-sections') }}" wire:navigate
-          class="flex items-center px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('teacher.my-sections', 'teacher.my-sections.*') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100' }}">
-          <x-heroicon-o-squares-2x2 class="w-5 h-5 mr-3" /> Sections
-        </a>
-        <a href="#"
-          class="flex items-center px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('teacher.analytics') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100' }}">
-          <x-heroicon-o-chart-bar class="w-5 h-5 mr-3" /> Analytics
-        </a>
+        @if (Auth::user()->profileable_type === \App\Models\Teacher::class && Auth::user()->profile->role === 'rdo')
+          <a href="{{ route('rdo.home') }}" wire:navigate
+            class="flex items-center px-4 py-2 rounded-lg group {{ request()->routeIs('rdo.home') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100 transition-colors' }}">
+            <x-heroicon-o-home class="w-5 h-5 mr-3" />Dashboard
+          </a>
+
+        @elseif (Auth::user()->profileable_type === \App\Models\Teacher::class)
+          <a href="{{ route('teacher.home') }}" wire:navigate
+            class="flex items-center px-4 py-2 rounded-lg group {{ request()->routeIs('teacher.home') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100 transition-colors' }}">
+            <x-heroicon-o-home class="w-5 h-5 mr-3" /> Home
+          </a>
+          <a href="{{ route('teacher.my-sections') }}" wire:navigate
+            class="flex items-center px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('teacher.my-sections', 'teacher.my-sections.*') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100' }}">
+            <x-heroicon-o-squares-2x2 class="w-5 h-5 mr-3" /> Sections
+          </a>
+          <a href="#"
+            class="flex items-center px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('teacher.analytics') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100' }}">
+            <x-heroicon-o-chart-bar class="w-5 h-5 mr-3" /> Analytics
+          </a>
+        @elseif (Auth::user()->profileable_type === \App\Models\Student::class)
+          <a href="{{ route('student.home') }}" wire:navigate
+            class="flex items-center px-4 py-2 rounded-lg group {{ request()->routeIs('student.home') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100 transition-colors' }}">
+            <x-heroicon-o-home class="w-5 h-5 mr-3" /> Home
+          </a>
+        @endif
       </nav>
     </aside>
 

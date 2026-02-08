@@ -2,17 +2,21 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Semester extends Model
 {
+    use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name',
+        'year',
+        'phase',
         'start_date',
         'end_date',
     ];
@@ -31,18 +35,12 @@ class Semester extends Model
         ];
     }
 
-    public function sections()
+    public function scopeCurrentSemester($query)
     {
-        return $this->hasMany(Section::class);
-    }
+        $currentDate = now()->toDateString();
 
-    public function current(): ?Semester
-    {
-        $today = now('Asia/Manila')->toDateString();
-
-        return static::query()
-            ->where('start_date', '<=', $today)
-            ->where('end_date', '>=', $today)
+        return $query->where('start_date', '<=', $currentDate)
+            ->where('end_date', '>=', $currentDate)
             ->first();
     }
 }

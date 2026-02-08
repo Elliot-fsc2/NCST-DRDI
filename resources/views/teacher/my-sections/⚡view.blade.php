@@ -26,12 +26,13 @@ new class extends Component implements HasActions, HasSchemas {
   #[Computed]
   public function activeTab(): string
   {
-    return request()->query('tab', 'news');
+    return request()->query('tab', 'groups');
   }
 
   public function editAction(): Action
   {
     return Action::make('editSection')
+      ->modalWidth('lg')
       ->fillForm([
         'name' => $this->section->name,
         'course_id' => $this->section->course_id,
@@ -39,7 +40,6 @@ new class extends Component implements HasActions, HasSchemas {
       ])
       ->action(function (array $data) {
         $this->section->update($data);
-        $this->section->loadCount(['students', 'researchgroups']);
       })
       ->successNotificationTitle('Section updated successfully.')
       ->schema([
@@ -50,7 +50,7 @@ new class extends Component implements HasActions, HasSchemas {
           ->options(Course::whereRelation('department', 'id', auth()->user()->profile->department_id)->pluck('name', 'id'))
           ->required(),
         Select::make('semester_id')
-          ->options(Semester::pluck('name', 'id'))
+          ->options(Semester::currentSemester()->pluck('year', 'id'))
           ->required(),
       ]);
   }
@@ -84,10 +84,10 @@ new class extends Component implements HasActions, HasSchemas {
   <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
     <div class="lg:col-span-3">
       <div class="flex items-center space-x-8 border-b border-gray-100 mb-8">
-        <a href="?tab=news" wire:navigate
+        {{-- <a href="?tab=news" wire:navigate
           class="pb-4 text-sm font-bold uppercase tracking-widest transition-all {{ $this->activeTab === 'news' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-400 hover:text-gray-600' }}">
           News Feed
-        </a>
+        </a> --}}
         <a href="?tab=groups" wire:navigate
           class="pb-4 text-sm font-bold uppercase tracking-widest transition-all {{ $this->activeTab === 'groups' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-400 hover:text-gray-600' }}">
           Groups
@@ -99,9 +99,9 @@ new class extends Component implements HasActions, HasSchemas {
       </div>
 
       <div class="space-y-6">
-        @if($this->activeTab === 'news')
-          <livewire:teacher::my-sections.news />
-        @endif
+        {{-- @if($this->activeTab === 'news')
+        <livewire:teacher::my-sections.news />
+        @endif --}}
 
         @if($this->activeTab === 'groups')
           <livewire:teacher::my-sections.groups :section="$this->section" />

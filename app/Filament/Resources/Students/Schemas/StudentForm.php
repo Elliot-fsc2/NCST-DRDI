@@ -23,12 +23,12 @@ class StudentForm
                         TextInput::make('student_number')
                             ->required(),
                     ]),
-                
+
                 Section::make('User Account')
                     ->schema([
                         TextInput::make('user.email')
                             ->email()
-                            ->required()
+                            ->required(fn (string $context): bool => $context === 'create')
                             ->unique('users', 'email', ignoreRecord: true),
                         TextInput::make('user.password')
                             ->password()

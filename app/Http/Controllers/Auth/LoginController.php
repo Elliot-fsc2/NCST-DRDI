@@ -33,6 +33,11 @@ class LoginController extends Controller
 
             $user = Auth::user();
 
+            // Check user role directly for RDO
+            if ($user->profile->role === 'rdo') {
+                return redirect()->route('rdo.home');
+            }
+
             return match ($user->profileable_type) {
                 Teacher::class => redirect()->route('teacher.home'),
                 Student::class => redirect()->route('student.home'),
