@@ -6,12 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ isset($title) ? $title . ' | ' . config('app.name', 'Laravel') : config('app.name', 'Laravel') }}</title>
   <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   @filamentStyles
   @vite(['resources/css/app.css', 'resources/js/app.js'])
   @livewireStyles
 </head>
 
-<body class="bg-gray-400 font-sans antialiased" x-data="{ sidebarOpen: false }">
+<body class="bg-gray-400 antialiased" style="font-family: 'Poppins', sans-serif;" x-data="{ sidebarOpen: false }">
 
   <div class="flex h-screen overflow-hidden">
 
@@ -48,10 +52,11 @@
             class="flex items-center px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('teacher.my-sections', 'teacher.my-sections.*') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100' }}">
             <x-heroicon-o-squares-2x2 class="w-5 h-5 mr-3" /> Sections
           </a>
-          <a href="#"
-            class="flex items-center px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('teacher.analytics') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100' }}">
-            <x-heroicon-o-chart-bar class="w-5 h-5 mr-3" /> Analytics
+          <a href="{{ route('teacher.all-groups.view') }}" wire:navigate
+            class="flex items-center px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('teacher.all-groups.view') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100' }}">
+            <x-heroicon-o-users class="w-5 h-5 mr-3" /> Groups
           </a>
+
         @elseif (Auth::user()->profileable_type === \App\Models\Student::class)
           <a href="{{ route('student.home') }}" wire:navigate
             class="flex items-center px-4 py-2 rounded-lg group {{ request()->routeIs('student.home') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100 transition-colors' }}">

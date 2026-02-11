@@ -23,4 +23,20 @@ class SectionStudentService
             ]);
         }
     }
+
+    public function updateStudents(array $data): void
+    {
+        // dd($data);
+        $this->ss->whereId($data['id'])->update([
+            'student_name' => $data['name'],
+            'email' => $data['email'],
+            'contact_number' => $data['contact_number'],
+        ]);
+    }
+
+    public function deleteStudents(array $data): void
+    {
+        // dd($data);
+        $this->ss->whereId($data['id'])->delete();
+    }
 }

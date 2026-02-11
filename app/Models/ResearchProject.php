@@ -19,7 +19,6 @@ class ResearchProject extends Model
         'title',
         'description',
         'research_group_id',
-        'assigned_teacher_id',
     ];
 
     /**

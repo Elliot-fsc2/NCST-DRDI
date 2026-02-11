@@ -2,10 +2,12 @@
 
 use App\Models\Section;
 use Livewire\Component;
+use Livewire\Attributes\Title;
 
-new class extends Component
-{
-    public Section $section;
+new
+  #[Title('Add Student')]
+  class extends Component {
+  public Section $section;
 };
 ?>
 <div class="max-w-7xl mx-auto px-4 py-1 font-interface">

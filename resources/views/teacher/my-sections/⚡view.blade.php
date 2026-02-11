@@ -114,7 +114,7 @@ new class extends Component implements HasActions, HasSchemas {
     </div>
 
     <div class="lg:col-span-1 space-y-6">
-      <div class="bg-white rounded-[2rem] border border-gray-100 p-8 shadow-sm">
+      <div class="bg-white rounded-[2rem] border border-gray-100 p-8 shadow-sm h-[400px] flex flex-col">
         <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-6 border-b border-gray-50 pb-4">Section
           Stats</h3>
 

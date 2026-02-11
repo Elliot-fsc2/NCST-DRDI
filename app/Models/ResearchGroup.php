@@ -34,7 +34,6 @@ class ResearchGroup extends Model
             'id' => 'integer',
             'course_id' => 'integer',
             'section_id' => 'integer',
-            'leader_id' => 'integer',
         ];
     }
 
@@ -48,6 +47,11 @@ class ResearchGroup extends Model
         return $this->belongsTo(Course::class);
     }
 
+    public function section(): BelongsTo
+    {
+        return $this->belongsTo(Section::class);
+    }
+
     public function leader(): BelongsTo
     {
         return $this->belongsTo(Student::class);
@@ -56,5 +60,10 @@ class ResearchGroup extends Model
     public function members(): HasMany
     {
         return $this->hasMany(Member::class);
+    }
+
+    public function personnelAssignments(): HasMany
+    {
+        return $this->hasMany(PersonnelAssignment::class);
     }
 }

@@ -29,6 +29,12 @@ Route::middleware(['auth', 'teacher'])
         Route::livewire('/my-sections', 'teacher::my-sections')->name('my-sections');
         Route::livewire('/my-sections/{section}', 'teacher::my-sections.view')->name('my-sections.view');
         Route::livewire('/my-sections/{section}/students', 'teacher::my-sections.students.create')->name('my-sections.students');
+        Route::livewire('/my-sections/{section}/students/{student}/edit', 'teacher::my-sections.students.edit')->name('my-sections.students.edit');
+        Route::livewire('/my-sections/{section}/groups/{group}/view', 'teacher::groups.view')->name('my-sections.groups.view');
+        Route::livewire('/my-sections/{section}/groups/{group}/add-members', 'teacher::groups.add-members')->name('my-sections.groups.add-members');
+
+        Route::livewire('/all-groups', 'teacher::all-groups.view')->name('all-groups.view');
+
     });
 
 // Student Routes

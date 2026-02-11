@@ -3,6 +3,7 @@
 use App\Models\Section;
 use Livewire\Component;
 use Filament\Actions\Action;
+use App\Services\SectionStudentService;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Actions\Concerns\InteractsWithActions;
@@ -12,10 +13,26 @@ new class extends Component implements HasActions, HasSchemas {
   use InteractsWithActions;
   use InteractsWithSchemas;
   public Section $section;
+  protected SectionStudentService $sectionStudentService;
 
+  public function boot(SectionStudentService $sectionStudentService)
+  {
+    $this->sectionStudentService = $sectionStudentService;
+  }
   public function mount(Section $section): void
   {
     $this->section = $section->load('students');
+  }
+
+  public function deleteAction(): Action
+  {
+    return Action::make('delete')
+      ->action(function (array $arguments) {
+        $studentId = $arguments['student'];
+        $this->sectionStudentService->deleteStudents(['id' => $studentId]);
+      })
+      ->successNotificationTitle('Student removed')
+      ->requiresConfirmation();
   }
 
 };
@@ -73,12 +90,12 @@ new class extends Component implements HasActions, HasSchemas {
             </td>
             <td class="px-3 sm:px-6 py-3 sm:py-4 text-right">
               <div class="flex items-center justify-end gap-1 sm:gap-2">
-                <button class="text-blue-600 hover:text-blue-700 font-semibold text-xs transition-colors">
-                  Edit
-                </button>
-                <button class="text-red-600 hover:text-red-700 font-semibold text-xs transition-colors">
-                  Delete
-                </button>
+                <x-filament::icon-button tag="a" wire:navigate icon="heroicon-m-arrow-top-right-on-square" label="Edit"
+                  href="{{ route('teacher.my-sections.students.edit', ['section' => $section, 'student' => $student]) }}"
+                  class="text-blue-600 hover:text-blue-700 font-semibold text-xs transition-colors" />
+                <x-filament::icon-button icon="heroicon-m-trash" label="Delete"
+                  wire:click="mountAction('deleteAction', {student: {{ $student->id }}})"
+                  class="text-red-600 hover:text-red-700 font-semibold text-xs transition-colors" />
               </div>
             </td>
           </tr>
@@ -90,4 +107,5 @@ new class extends Component implements HasActions, HasSchemas {
       </tbody>
     </table>
   </div>
+  <x-filament-actions::modals />
 </div>
