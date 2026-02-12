@@ -55,15 +55,6 @@ new #[Title('My Groups')]
 
   {{-- Breadcrumbs --}}
   <div class="mb-6 sm:mb-8">
-    <nav
-      class="flex flex-wrap text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wide sm:tracking-widest mb-2 gap-x-1 sm:gap-x-0">
-      <a href="{{ route('teacher.home') }}" wire:navigate class="hover:text-blue-600 transition-colors">
-        Home
-      </a>
-      <span class="mx-1 sm:mx-2">/</span>
-      <span class="text-gray-900">All Groups</span>
-    </nav>
-
     {{-- Header --}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
       <div>
@@ -187,8 +178,8 @@ new #[Title('My Groups')]
       {{-- Assigned to Me --}}
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @forelse($this->assignedGroups as $group)
-          <a href="{{ route('teacher.my-sections.groups.view', ['section' => $group->section_id, 'group' => $group->id]) }}"
-            wire:navigate wire:key="assigned-group-{{ $group->id }}">
+          <a href="{{ route('teacher.all-groups.assigned.view', ['group' => $group]) }}" wire:navigate
+            wire:key="assigned-group-{{ $group->id }}">
             <div
               class="group relative bg-gradient-to-br from-white to-gray-50 rounded-3xl border border-gray-200 overflow-hidden hover:shadow-xl hover:border-blue-200 transition-all duration-300 hover:-translate-y-1">
               {{-- Decorative gradient bar --}}

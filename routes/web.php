@@ -9,7 +9,6 @@ Route::fallback(function () {
 
 Route::redirect('/', '/login');
 
-// Authentication Routes
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'show'])->name('login');
     Route::post('/login', [LoginController::class, 'authenticate']);
@@ -34,6 +33,7 @@ Route::middleware(['auth', 'teacher'])
         Route::livewire('/my-sections/{section}/groups/{group}/add-members', 'teacher::groups.add-members')->name('my-sections.groups.add-members');
 
         Route::livewire('/all-groups', 'teacher::all-groups.view')->name('all-groups.view');
+        Route::livewire('/all-groups/assigned/{group}', 'teacher::all-groups.assigned.view')->name('all-groups.assigned.view');
 
     });
 
@@ -50,4 +50,5 @@ Route::middleware(['auth', 'rdo'])
     ->as('rdo.')
     ->group(function () {
         Route::livewire('/home', 'rdo::home')->name('home');
+        Route::livewire('/masterlist', 'rdo::masterlist')->name('masterlist');
     });

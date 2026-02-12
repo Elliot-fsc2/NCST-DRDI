@@ -1,23 +1,29 @@
 <?php
 
-use App\Models\Section;
-use Livewire\Component;
-use Filament\Actions\Action;
 use App\Models\ResearchGroup;
-use Livewire\Attributes\Computed;
-use Filament\Forms\Components\TextInput;
-use Filament\Notifications\Notification;
-use Filament\Actions\Contracts\HasActions;
-use Filament\Schemas\Contracts\HasSchemas;
+use App\Models\Section;
+use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Concerns\InteractsWithSchemas;
+use Filament\Schemas\Contracts\HasSchemas;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Title;
+use Livewire\Component;
 
-new class extends Component implements HasActions, HasSchemas {
-  use InteractsWithActions;
+new #[Title('Group Details')]
+  class extends Component implements HasActions, HasSchemas {
   use InteractsWithSchemas;
+  use InteractsWithActions;
 
   public ResearchGroup $group;
   public Section $section;
+
+  public function title(): string
+  {
+    return $this->group->name;
+  }
 
   public function mount(): void
   {
@@ -64,8 +70,6 @@ new class extends Component implements HasActions, HasSchemas {
       })
       ->successNotificationTitle('Group deleted successfully.');
   }
-
-
 };
 ?>
 

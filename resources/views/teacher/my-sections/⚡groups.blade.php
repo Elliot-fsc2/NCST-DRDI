@@ -11,7 +11,8 @@ use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Schemas\Concerns\InteractsWithSchemas;
 
-new class extends Component implements HasActions, HasSchemas {
+new
+class extends Component implements HasActions, HasSchemas {
   use InteractsWithActions;
   use InteractsWithSchemas;
 

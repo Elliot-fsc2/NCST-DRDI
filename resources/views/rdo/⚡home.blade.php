@@ -11,7 +11,7 @@ new #[Layout('layouts::new-layout')] class extends Component {
     public function mount(): void
     {
         $this->financialStats = [
-            'total_collectibles' => 150250.00,
+            'total_collectibles' => 2322.00,
             'total_expenses' => 45000.00,
             'net_savings' => 105250.00,
         ];

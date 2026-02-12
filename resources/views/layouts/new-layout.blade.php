@@ -37,11 +37,41 @@
       </div>
 
       <nav class="mt-6 px-4 space-y-1">
-        @if (Auth::user()->profileable_type === \App\Models\Teacher::class && Auth::user()->profile->role === 'rdo')
+        @if (Auth::user()->profileable_type === \App\Models\Teacher::class && Auth::user()->profile->role === \App\Enums\InstructorRole::RDO)
           <a href="{{ route('rdo.home') }}" wire:navigate
             class="flex items-center px-4 py-2 rounded-lg group {{ request()->routeIs('rdo.home') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100 transition-colors' }}">
             <x-heroicon-o-home class="w-5 h-5 mr-3" />Dashboard
           </a>
+          <a href="{{ route('teacher.my-sections') }}" wire:navigate
+            class="flex items-center px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('teacher.my-sections', 'teacher.my-sections.*') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100' }}">
+            <x-heroicon-o-squares-2x2 class="w-5 h-5 mr-3" /> Sections
+          </a>
+          <a href="{{ route('teacher.all-groups.view') }}" wire:navigate
+            class="flex items-center px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('teacher.all-groups.view', 'teacher.all-groups.*') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100' }}">
+            <x-heroicon-o-users class="w-5 h-5 mr-3" /> Groups
+          </a>
+
+          <div x-data="{ open: $persist(false).as('rdoManageMenuOpen') }">
+            <button @click="open = !open"
+              class="flex items-center justify-between w-full px-4 py-2 rounded-lg transition-colors hover:bg-gray-100">
+              <div class="flex items-center">
+                <span class="ml-3">Manage</span>
+              </div>
+              <x-heroicon-o-chevron-down class="w-4 h-4 transition-transform" ::class="open ? 'rotate-180' : ''" />
+            </button>
+            <div x-show="open" x-collapse class="ml-4 mt-1 space-y-1">
+              <a href="{{ route('rdo.masterlist') }}" wire:navigate
+                class="flex items-center px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('rdo.masterlist', 'rdo.masterlist.*') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100' }}">
+                <x-heroicon-o-list-bullet class="w-4 h-4 mr-3" />
+                Masterlist
+              </a>
+              <a href="{{ route('rdo.masterlist') }}" wire:navigate
+                class="flex items-center px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('rdo.masterlist', 'rdo.masterlist.*') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100' }}">
+                <x-heroicon-o-currency-dollar class="w-4 h-4 mr-3" />
+                Thesis Fees
+              </a>
+            </div>
+          </div>
 
         @elseif (Auth::user()->profileable_type === \App\Models\Teacher::class)
           <a href="{{ route('teacher.home') }}" wire:navigate
@@ -53,7 +83,7 @@
             <x-heroicon-o-squares-2x2 class="w-5 h-5 mr-3" /> Sections
           </a>
           <a href="{{ route('teacher.all-groups.view') }}" wire:navigate
-            class="flex items-center px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('teacher.all-groups.view') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100' }}">
+            class="flex items-center px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('teacher.all-groups.view', 'teacher.all-groups.*') ? 'text-blue-600 bg-blue-200 font-bold' : 'hover:bg-gray-100' }}">
             <x-heroicon-o-users class="w-5 h-5 mr-3" /> Groups
           </a>
 
